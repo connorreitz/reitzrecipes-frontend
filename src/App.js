@@ -2,6 +2,7 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import ItemList from "./ItemList";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 /** old app with fetching from backend
 function App() {
   const [data, setData] = React.useState(null);
@@ -29,7 +30,12 @@ function App() {
 function App() {
   return (
     <div className="App">
-      <ItemList />
+      <BrowserRouter>
+        <Routes>
+          <Route path="recipe/:id" element={<ItemList />} />
+        </Routes>
+      </BrowserRouter>
+      
     </div>
   );
 }

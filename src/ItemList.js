@@ -2,16 +2,30 @@ import React, { useState, useEffect } from 'react';
 import './ItemList.css';
 import default_image from './download.jpg';
 import burga from './burga.jpeg'
+import { useParams } from 'react-router-dom'
 
 function ItemList() {
-  const [items, setItems] = useState(['Item 1', 'Item 2', 'Item 3', 'Item 4']);
+  const [ingredients, setIngredients] = useState([]);
+  const [amounts, setAmounts] = useState([]);
+  const [steps, setSteps] = useState('')
   const [searchTerm, setSearchTerm] = useState('');
   const [image1, setImage1] = useState(default_image);
   const [image2, setImage2] = useState(burga);
 
+  const {id} = useParams()
+
   useEffect(() => {
-    // You can fetch data here if items are dynamic and come from an API
-    // setItems(fetchedItems);
+    fetch(`http://127.0.0.1:3000/recipe/${id}`)
+    .then((res) => {
+      return res.json()
+    })
+    .then((data) => {
+      console.log('retrieved data: ', data)
+      
+      setIngredients(Object.keys(data.ingredients))
+      setAmounts(Object.values(data.ingredients))
+      setSteps(data.steps)
+    })
   }, []);
 
   const handleSearchChange = (event) => {
@@ -41,19 +55,27 @@ function ItemList() {
           <div className="list-container">
             <h1>Ingredients</h1>
             <ul>
-              {items.filter(item => item.toLowerCase().includes(searchTerm.toLowerCase())).map((item, index) => (
-                <li key={index}>{item}</li>
+              {ingredients.filter(ingredient => ingredient.toLowerCase().includes(searchTerm.toLowerCase())).map((ingredient, index) => (
+                <li key={index}>{ingredient}</li>
               ))}
             </ul>
           </div>
-          <div className="description-container">
+          <div className="list-container">
+            <h1>Amount</h1>
+            <ul>
+              {amounts.map((amount, index) => (
+                <li key={index}>{amount}</li>
+              ))}
+            </ul>
+          </div>
+          
+        </div>
+        <div className="description-container">
             <h1>Steps</h1>
             <p>
-              Cook burga
-              Chicken burga
+              {steps}
             </p>
           </div>
-        </div>
       </div>
     </div>
   );
