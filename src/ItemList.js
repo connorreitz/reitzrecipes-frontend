@@ -5,9 +5,8 @@ import burga from './burga.jpeg'
 import { useParams } from 'react-router-dom'
 
 function ItemList() {
-  const [ingredients, setIngredients] = useState([]);
-  const [amounts, setAmounts] = useState([]);
-  const [steps, setSteps] = useState('')
+  const [recipe, setRecipe] = useState([]);
+  const [steps, setSteps] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [image1, setImage1] = useState(default_image);
   const [image2, setImage2] = useState(burga);
@@ -21,9 +20,8 @@ function ItemList() {
     })
     .then((data) => {
       console.log('retrieved data: ', data)
-      
-      setIngredients(Object.keys(data.ingredients))
-      setAmounts(Object.values(data.ingredients))
+
+      setRecipe(data.ingredients)
       setSteps(data.steps)
     })
   }, []);
@@ -45,8 +43,8 @@ function ItemList() {
       </div>
       <div className="content-wrapper">
         <div className="images-container">
-          {image1 && <img src={image1} alt="Image 1" className="image" />}
-          {image2 && <img src={image2} alt="Image 2" className="image" />}
+          {image1 && <img src={`https://reitz-recipes-templates.s3.us-east-2.amazonaws.com/images/${id}/image_left.jpg`} alt="Image 1" className="image" />}
+          {image2 && <img src={`https://reitz-recipes-templates.s3.us-east-2.amazonaws.com/images/${id}/image_right.jpg`} alt="Image 2" className="image" />}
         </div>
         <div className="image-caption">
           <p>Here is some text below the images, aligned with the leftmost image.</p>
@@ -55,16 +53,8 @@ function ItemList() {
           <div className="list-container">
             <h1>Ingredients</h1>
             <ul>
-              {ingredients.filter(ingredient => ingredient.toLowerCase().includes(searchTerm.toLowerCase())).map((ingredient, index) => (
-                <li key={index}>{ingredient}</li>
-              ))}
-            </ul>
-          </div>
-          <div className="list-container">
-            <h1>Amount</h1>
-            <ul>
-              {amounts.map((amount, index) => (
-                <li key={index}>{amount}</li>
+              {recipe.filter(ingredient => ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())).map((ingredient, index) => (
+                <li key={index}>{ingredient.amount + ' ' + ingredient.unit + ' ' + ingredient.name}</li>
               ))}
             </ul>
           </div>
