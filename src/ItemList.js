@@ -5,8 +5,14 @@ import './ItemList.css';
 function ItemList() {
   const [recipe, setRecipe] = useState([]);
   const [steps, setSteps] = useState('');
+  const [title, setTitle] = useState('');
+  const [source, setSource] = useState('');
+  const [servings, setServings] = useState(0)
   const [searchTerm, setSearchTerm] = useState('');
+  const [inputValue, setInputValue] = useState('');
+
   const { id } = useParams();
+  const inputWidth = (servings.toString().length) * 9;
 
   useEffect(() => {
     fetch(`http://127.0.0.1:3000/recipe/${id}`)
@@ -14,35 +20,51 @@ function ItemList() {
       .then((data) => {
         setRecipe(data.ingredients);
         setSteps(data.steps);
+        setTitle(data.title);
+        setSource(data.source);
+        setServings(data.servings);
+        
       });
   }, [id]);
 
-  return (
-    <div className="container">
-      <div className="toolbar">
-        <button onClick={() => window.location.href = '/'} className="home-button">Home</button>
-        <input
-          type="text"
-          placeholder="Search ingredients..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
-        />
-      </div>
+  function getServingsText(servings) {
+    return servings == 1 ? 'serving' : 'servings'
+  }
 
+  return (
+     
+    <div className="container">
+
+      <h2 className="image-title">{title}</h2>
+      
       <div className="content-wrapper">
         <div className="images-container">
           <img src={`https://reitz-recipes-templates.s3.us-east-2.amazonaws.com/images/${id}/image_left.jpg`} alt="Left" className="image" />
           <img src={`https://reitz-recipes-templates.s3.us-east-2.amazonaws.com/images/${id}/image_right.jpg`} alt="Right" className="image" />
         </div>
-        <p className="image-caption">Here is some text below the images, aligned with the leftmost image.</p>
+        <p className="source left-align">source: {source}</p>
         
         <div className="content-sections">
           <div className="list-container">
-            <h1 className="section-title">Ingredients</h1>
+            <h1 className="section-title">Ingredients (makes <input
+          type="number"
+          placeholder={0}
+          value={servings}
+          onChange={(e) => {
+            setServings(e.target.value)
+          }}
+          style={{
+            padding: '8px',
+            fontSize: '16px',
+            width: `${inputWidth}px`, // Dynamic width based on text length
+            minWidth: '10px', // Optional: Set a minimum width
+          }}
+          className="search-input"
+        /> {getServingsText(servings)})</h1>
+            
             <ul className="ingredients-list">
               {recipe.filter(ingredient => ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())).map((ingredient, index) => (
-                <li key={index} className="ingredient-item">{ingredient.amount} {ingredient.unit} {ingredient.name}</li>
+                <li key={index} className="ingredient-item">{servings*ingredient.amount} {ingredient.unit} {ingredient.name.toLowerCase()}</li>
               ))}
             </ul>
           </div>
@@ -56,5 +78,19 @@ function ItemList() {
     </div>
   );
 }
+
+/**     toolbar code (leaving unused for now)
+ *       <div className="toolbar">
+        <button onClick={() => window.location.href = '/'} className="home-button">Home</button>
+        <h1 className="toolbar-title">Reitz Recipes</h1>
+        <input
+          type="text"
+          placeholder="Search ingredients..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+      </div>
+ */
 
 export default ItemList;

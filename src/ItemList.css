@@ -23,6 +23,15 @@ body {
     align-items: center;
     padding: 10px 0;
   }
+
+  .toolbar-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
   
   .home-button {
     background-color: #007bff;
@@ -43,7 +52,7 @@ body {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
-    width: 200px;
+    width: 2ch;
   }
   
   /* Image Section */
@@ -59,7 +68,7 @@ body {
     border-radius: 8px;
   }
   
-  .image-caption {
+  .source {
     font-size: 14px;
     color: #666;
     margin-top: 5px;
@@ -112,3 +121,14 @@ body {
     font-size: 16px;
     line-height: 1.5;
   }
+
+  /* Remove the spinner arrows in number inputs */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* For Firefox */
+}
