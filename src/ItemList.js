@@ -8,6 +8,7 @@ function ItemList() {
   const [title, setTitle] = useState('');
   const [source, setSource] = useState('');
   const [servings, setServings] = useState(0)
+  const [baseServings, setBaseServings] = useState(0)
   const [searchTerm, setSearchTerm] = useState('');
   const [inputValue, setInputValue] = useState('');
 
@@ -22,6 +23,7 @@ function ItemList() {
         setSteps(data.steps);
         setTitle(data.title);
         setSource(data.source);
+        setBaseServings(data.servings);
         setServings(data.servings);
         
       });
@@ -39,8 +41,8 @@ function ItemList() {
       
       <div className="content-wrapper">
         <div className="images-container">
-          <img src={`https://reitz-recipes-templates.s3.us-east-2.amazonaws.com/images/${id}/image_left.jpg`} alt="Left" className="image" />
-          <img src={`https://reitz-recipes-templates.s3.us-east-2.amazonaws.com/images/${id}/image_right.jpg`} alt="Right" className="image" />
+          <img src={`https://reitz-recipes-templates.s3.us-east-2.amazonaws.com/images/${id}/image_left.jpeg`} alt="Left" className="image" />
+          <img src={`https://reitz-recipes-templates.s3.us-east-2.amazonaws.com/images/${id}/image_right.jpeg`} alt="Right" className="image" />
         </div>
         <p className="source left-align">source: {source}</p>
         
@@ -56,15 +58,15 @@ function ItemList() {
           style={{
             padding: '8px',
             fontSize: '16px',
-            width: `${inputWidth}px`, // Dynamic width based on text length
-            minWidth: '10px', // Optional: Set a minimum width
+            width: `${inputWidth + 20}px`, // Dynamic width based on text length
+            minWidth: '30px', // Optional: Set a minimum width
           }}
           className="search-input"
         /> {getServingsText(servings)})</h1>
             
             <ul className="ingredients-list">
               {recipe.filter(ingredient => ingredient.name.toLowerCase().includes(searchTerm.toLowerCase())).map((ingredient, index) => (
-                <li key={index} className="ingredient-item">{servings*ingredient.amount} {ingredient.unit} {ingredient.name.toLowerCase()}</li>
+                <li key={index} className="ingredient-item">{(servings/baseServings)*ingredient.amount} {ingredient.unit} {ingredient.name.toLowerCase()}</li>
               ))}
             </ul>
           </div>

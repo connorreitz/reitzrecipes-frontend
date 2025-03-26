@@ -1,31 +1,9 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import ItemList from "./ItemList";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-/** old app with fetching from backend
-function App() {
-  const [data, setData] = React.useState(null);
-
-  React.useEffect(() => {
-    fetch("/recipe/test")
-      .then((res) => {return res.json()})
-      .then((data) => {
-        console.log(data)
-        setData(data)
-      });
-  }, []);
-
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>ingredient: {data.ingredient}</p>
-      </header>
-    </div>
-  );
-}*/
+import RecipeForm from "./RecipeForm";
+import LoginPage from "./Login";
 
 function App() {
   return (
@@ -33,6 +11,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="recipe/:id" element={<ItemList />} />
+          <Route path="recipe/create" element={<RecipeForm />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="/" element={<p>hello world</p>} />
         </Routes>
       </BrowserRouter>
       
